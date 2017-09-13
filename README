@@ -1,0 +1,2 @@
+# Fortiparser
+This tools shows you the ammount of packets send to every destination IP or port per each Policy ID located in the logs. Also it creates a xlsx o csv file that contains the sources, destinations and applications in every policy ID detected. This tool is very useful to perform a fine tunning of the rules on Fortinet firewalls. 
