@@ -62,13 +62,13 @@ class RuleID(object):
 
 
     def countTCPPort(self, port):
-        if self.dstports_tcp.has_key(port):
+        if self.dstports_tcp.__contains__(port):
             self.dstports_tcp[port] += 1
         else:
             self.dstports_tcp[port] = 1
 
     def countUDPPort(self, port):
-        if self.dstports_udp.has_key(port):
+        if self.dstports_udp.__contains__(port):
             self.dstports_udp[port] += 1
         else:
             self.dstports_udp[port] = 1
@@ -80,31 +80,31 @@ class RuleID(object):
             self.countUDPPort(port)
 
     def countDstIP(self, dstip):
-        if self.dstips.has_key(dstip):
+        if self.dstips.__contains__(dstip):
             self.dstips[dstip] += 1
         else:
             self.dstips[dstip] = 1
 
     def countSrcIP(self, srcip):
-        if self.srcips.has_key(srcip):
+        if self.srcips.__contains__(srcip):
             self.srcips[srcip] += 1
         else:
             self.srcips[srcip] = 1
 
     def countSrcIntf(self, srcintf):
-        if self.srcintf.has_key(srcintf):
+        if self.srcintf.__contains__(srcintf):
             self.srcintf[srcintf] += 1
         else:
             self.srcintf[srcintf] = 1
 
     def countDstIntf(self, dstintf):
-        if self.dstintf.has_key(dstintf):
+        if self.dstintf.__contains__(dstintf):
             self.dstintf[dstintf] += 1
         else:
             self.dstintf[dstintf] = 1
 
     def countService(self, service):
-        if self.services.has_key(service):
+        if self.services.__contains__(service):
             self.services[service] += 1
         else:
             self.services[service] = 1
@@ -131,58 +131,58 @@ class Log(object):
         self.service = service
 
     def toString(self):
-        print   "SrcIP: " + self.srcip + " | " \
+        print   ("SrcIP: " + self.srcip + " | " \
                  "SrcPort: " + self.srcport + " |  " \
                  "DstIP: " + self.dstip + " | " \
                  "DstPort: " + self.dstport + " | " \
                  "Protocol: " + self.protocol + " | " \
                  "Rule ID: " + self.rule_id + " | " \
-                 "Device ID: " + self.device_id
+                 "Device ID: " + self.device_id)
 
 
 # Este metodo muestra la informacion en pantalla.
 def printResults(rulesids):
     for rule in rulesids:
-        print "\n=================================="
-        print "Rule ID: " + str(rule.id)
-        print "=================================="
+        print ("\n==================================")
+        print ("Rule ID: " + str(rule.id))
+        print ("==================================")
 
-        print "---- UDP ----"
+        print ("---- UDP ----")
         counter = 0
-        for key, value in sorted(rule.dstports_udp.items(), key=lambda (k, v): (v, k), reverse=True):
-            print "UDP: " + str(key) + " -> " + str(value)
+        for key, value in sorted(rule.dstports_udp.items(), key=lambda k_v: (k_v[0], k_v[1]), reverse=True):
+            print ("UDP: " + str(key) + " -> " + str(value))
             counter += 1
             if counter >= max_items_show:
                 break
 
-        print "\n---- TCP ----"
+        print ("\n---- TCP ----")
         counter = 0
-        for key, value in sorted(rule.dstports_tcp.items(), key=lambda (k, v): (v, k), reverse=True):
-            print "TCP: " + str(key) + " -> " + str(value)
+        for key, value in sorted(rule.dstports_tcp.items(), key=lambda k_v: (k_v[0], k_v[1]), reverse=True):
+            print ("TCP: " + str(key) + " -> " + str(value))
             counter += 1
             if counter >= max_items_show:
                 break
 
-        print "\n---- Destination IPs ----"
+        print ("\n---- Destination IPs ----")
         counter = 0
-        for key, value in sorted(rule.dstips.items(), key=lambda (k, v): (v, k), reverse=True):
-            print "Dest IP: " + str(key) + " -> " + str(value)
+        for key, value in sorted(rule.dstips.items(), key=lambda k_v: (k_v[0], k_v[1]), reverse=True):
+            print ("Dest IP: " + str(key) + " -> " + str(value))
             counter += 1
             if counter >= max_items_show:
                 break
 
-        print "\n---- Source IPs ----"
+        print ("\n---- Source IPs ----")
         counter = 0
-        for key, value in sorted(rule.srcips.items(), key=lambda (k, v): (v, k), reverse=True):
-            print "Src IP: " + str(key) + " -> " + str(value)
+        for key, value in sorted(rule.srcips.items(), key=lambda k_v: (k_v[0], k_v[1]), reverse=True):
+            print ("Src IP: " + str(key) + " -> " + str(value))
             counter += 1
             if counter >= max_items_show:
                 break
 
-        print "\n---- Services ----"
+        print ("\n---- Services ----")
         counter = 0
-        for key, value in sorted(rule.services.items(), key=lambda (k, v): (v, k), reverse=True):
-            print "Service: " + str(key) + " -> " + str(value)
+        for key, value in sorted(rule.services.items(), key=lambda k_v: (k_v[0], k_v[1]), reverse=True):
+            print ("Service: " + str(key) + " -> " + str(value))
             counter += 1
             if counter >= max_items_show:
                 break
@@ -215,7 +215,7 @@ def paramParser():
 # Este metodo devuelve una cadena de texto con los keys de una diccionario por orden de recurrencia.
 # Devuelve un 'No records' si no hay registros.
 def buildStringFromKeys(dict):
-    dict = sorted(dict.items(), key=lambda (k, v): (v, k), reverse=True)
+    dict = sorted(dict.items(), key=lambda k_v: (k_v[0], k_v[1]), reverse=True)
     all_fields = ""
     counter = 0
     for key, value in dict:
@@ -353,7 +353,7 @@ def parseFile(filepath):
                 all_fields = line.split(split_character)
                 fields = getFields(all_fields)
 
-                if debug: print fields
+                if debug: print (fields)
 
                 try:
                     if fields != None:
@@ -361,14 +361,14 @@ def parseFile(filepath):
                         if debug: log.toString()
                         logs.append(log)
                 except IndexError as e:
-                    if debug: print "[DEBUG] " + str(e)
+                    if debug: print ("[DEBUG] " + str(e))
                     if "app=PING" in line:
-                        if debug: print "[DEBUG] Ping packet detected... discarded"
+                        if debug: print ("[DEBUG] Ping packet detected... discarded")
                     else:
-                        if debug: print "[DEBUG] Line not read -> " + line
+                        if debug: print ("[DEBUG] Line not read -> " + line)
         return logs
     except IOError:
-        print "[ERROR] File <" + file_path + "> not found..."
+        print ("[ERROR] File <" + file_path + "> not found...")
         sys.exit(2)
 
 
@@ -398,23 +398,23 @@ def countValues(logs):
 
 def main():
     paramParser()
-    print banner
-    print "[INFO] Loading files. Please wait..."
+    print (banner)
+    print ("[INFO] Loading files. Please wait...")
     logs = parseFile(file_path)
-    print "[INFO] File parsed. Sorting the info..."
+    print ("[INFO] File parsed. Sorting the info...")
     rulesids = countValues(logs)
     rulesids = sorted(rulesids, key=lambda x: x.id)
     printResults(rulesids)
-    print "======================================="
-    print "[INFO] " + str(len(rulesids)) + " rules analyzed..."
+    print ("=======================================")
+    print ("[INFO] " + str(len(rulesids)) + " rules analyzed...")
     if output_format == "xlsx":
         file = reports_folder + "/" + file_path + "_" + xslx_filename
         writingToXLSX(rulesids, file)
-        print "[INFO] XLSX report created at '" + os.path.abspath(file) + "'"
+        print ("[INFO] XLSX report created at '" + os.path.abspath(file) + "'")
     if output_format == "csv":
         file = reports_folder + "/"  + file_path + "_"+ csv_filename
         writingToCSV(rulesids, file)
-        print "[INFO] CSV report created at '" + os.path.abspath(file) + "'"
+        print ("[INFO] CSV report created at '" + os.path.abspath(file) + "'")
 
 
 if __name__ == "__main__":
